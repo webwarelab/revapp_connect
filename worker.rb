@@ -30,6 +30,9 @@ require "net/ftp"
 require "fileutils"
 require "getoptlong"
 require "rdoc/usage"
+require "logger"
+
+LOGFILE = "worker.log"
 
 opts = GetoptLong.new(
   ["--help", "-h", GetoptLong::NO_ARGUMENT],
@@ -60,6 +63,35 @@ opts.each do |opt, arg|
 end
 
 class RevAppConnect
+  class Logger
+    class SimpleFormatter
+      def call(severity, time, progname, msg)
+        "[%s] %s\n" % [time.strftime("%Y-%m-%d %H:%M:%S"), msg.to_s]
+      end
+    end
+
+    class << self
+      def log
+        @log ||= begin
+          logger = ::Logger.new(LOGFILE)
+          logger.level = ::Logger::INFO
+          logger.formatter = SimpleFormatter.new
+          logger
+        end
+      end
+
+      def info(message)
+        puts message
+        log.info(message)
+      end
+
+      def fatal(message)
+        puts message
+        log.fatal(message)
+      end
+    end
+  end
+
   class ConfigurationError < StandardError; end
 
   IN_FOLDERS = %w[xmlout]
@@ -81,7 +113,7 @@ class RevAppConnect
       path = File.expand_path(File.join(DIR, folder))
       unless File.directory?(path)
         Dir.mkdir(path)
-        puts "created folder #{path}"
+        Logger.info("created folder #{path}")
       end
     end
   end
@@ -90,7 +122,7 @@ class RevAppConnect
     for folder in IN_FOLDERS
       @ftp.chdir("/#{folder}")
       for file in @ftp.nlst
-        puts "receiving: #{folder}/#{file}"
+        Logger.info("receiving: #{folder}/#{file}")
         get_file(file, folder)
         @ftp.delete(file)
       end
@@ -102,7 +134,7 @@ class RevAppConnect
     for folder in OUT_FOLDERS
       @ftp.chdir("/#{folder}")
       for file in Dir[File.join(DIR, folder, "*.*")]
-        puts "sending: #{file}"
+        Logger.info("sending: #{file}")
         if wait_until_complete(file) == true
           put_file(file)
           FileUtils.rm(file)
@@ -122,7 +154,7 @@ class RevAppConnect
     raise ConfigurationError, "FTP server location is missing! Provide option '-s [location]' when calling this script." unless server
     raise ConfigurationError, "FTP user is missing! Provide option '-u [user]' when calling this script." unless user
     raise ConfigurationError, "FTP password is missing! Provide option '-p [password]' when calling this script." unless password
-    puts "Connecting to #{user}@#{server}..."
+    Logger.info("Connecting to #{user}@#{server}...")
     @ftp = Net::FTP.new(server)
     @ftp.login(user, password)
   end
@@ -165,7 +197,7 @@ begin
   revapp.get
   revapp.put unless check_only
   revapp.exit
-  puts "Done!"
+  RevAppConnect::Logger.info("Done!")
 rescue RevAppConnect::ConfigurationError => e
-  puts e.message
+  RevAppConnect::Logger.fatal(e)
 end
