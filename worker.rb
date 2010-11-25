@@ -208,7 +208,6 @@ begin
   revapp.get
   revapp.put unless check_only
   revapp.exit
-  RevAppConnect::Logger.info("Done!")
 rescue RevAppConnect::ConfigurationError => e
   RevAppConnect::Logger.fatal(e)
 end
