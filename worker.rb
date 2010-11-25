@@ -33,6 +33,7 @@ require "rdoc/usage"
 require "logger"
 
 LOGFILE = "worker.log"
+EXCLUDES_REGEXP = /\/_fcsvr_/
 
 opts = GetoptLong.new(
   ["--help", "-h", GetoptLong::NO_ARGUMENT],
@@ -134,6 +135,7 @@ class RevAppConnect
     for folder in OUT_FOLDERS
       @ftp.chdir("/#{folder}")
       for file in Dir[File.join(DIR, folder, "*.*")]
+        next if exclude_file?(file)
         Logger.info("sending: #{file}")
         if wait_until_complete(file) == true
           put_file(file)
@@ -172,6 +174,15 @@ class RevAppConnect
   def textfile?(file)
     file =~ /\.(.+)$/
     TEXTFILES.include?($1)
+  end
+
+  def exclude_file?(file)
+    if file.match(EXCLUDES_REGEXP)
+      Logger.info("Skipping #{file}")
+      true
+    else
+      false
+    end
   end
 
   # Waits until local file is complete
