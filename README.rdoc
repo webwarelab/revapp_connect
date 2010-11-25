@@ -25,7 +25,7 @@ These folders will be created, if missing, and used for synchronizing:
   -p [password], --password [password]  ftp password
 
 
-== Example
+=== Example
 
   worker.rb -s myaccount.revapp.de -u myuser -p mypass
 
