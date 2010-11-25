@@ -8,7 +8,6 @@
 #   videos: Contains videos to be uploaded to RevApp.
 #   thumbs: Contains thumbnails of videos to be uploaded to RevApp.
 #   xmlin: Contains xml files of videos to be uploaded to RevApp.
-#
 #   xmlout: Contains modified xml files downloaded from RevApp.
 #
 #
