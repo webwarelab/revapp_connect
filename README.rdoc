@@ -1,4 +1,4 @@
-= RevApp Worker
+= RevApp Connect
 
 Synchronizes local directories with RevApp. For more information about RevApp,
 please visit http://www.revapp.de
