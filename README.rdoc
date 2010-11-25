@@ -1,8 +1,11 @@
 = RevApp Worker
 
-== Synopsis
+Synchronizes local directories with RevApp. For more information about RevApp,
+please visit http://www.revapp.de
 
-Synchronizes local directories with RevApp.
+
+== Prerequisites
+
 These folders will be created, if missing, and used for synchronizing:
 
 +videos+: Contains videos to be uploaded to RevApp.
