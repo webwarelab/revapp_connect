@@ -32,17 +32,18 @@ require "getoptlong"
 require "rdoc/usage"
 
 opts = GetoptLong.new(
-  [ "--help", "-h", GetoptLong::NO_ARGUMENT ],
-  [ "--check", "-c", GetoptLong::NO_ARGUMENT ],
-  [ "--server", "-s", GetoptLong::OPTIONAL_ARGUMENT ],
-  [ "--user", "-u", GetoptLong::OPTIONAL_ARGUMENT ],
-  [ "--password", "-p", GetoptLong::OPTIONAL_ARGUMENT ]
+  ["--help", "-h", GetoptLong::NO_ARGUMENT],
+  ["--check", "-c", GetoptLong::NO_ARGUMENT],
+  ["--server", "-s", GetoptLong::OPTIONAL_ARGUMENT],
+  ["--user", "-u", GetoptLong::OPTIONAL_ARGUMENT],
+  ["--password", "-p", GetoptLong::OPTIONAL_ARGUMENT]
 )
 
 check_only = false
 server ||= nil
 user ||= nil
 password ||= nil
+
 opts.each do |opt, arg|
   case opt
     when "--help"
