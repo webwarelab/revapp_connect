@@ -28,3 +28,8 @@ These folders will be created, if missing, and used for synchronizing:
 == Example
 
   worker.rb -s myaccount.revapp.de -u myuser -p mypass
+
+
+== Copyright
+
+Copyright (c) 2008-2010 Andre Pankratz. See LICENSE for details.
