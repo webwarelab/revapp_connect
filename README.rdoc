@@ -1,0 +1,27 @@
+= RevApp Worker
+
+== Synopsis
+
+Synchronizes local directories with RevApp.
+These folders will be created, if missing, and used for synchronizing:
+
++videos+: Contains videos to be uploaded to RevApp.
++thumbs+: Contains thumbnails of videos to be uploaded to RevApp.
++xmlin+: Contains xml files of videos to be uploaded to RevApp.
++xmlout+: Contains modified xml files downloaded from RevApp.
+
+
+== Usage
+
+  worker.rb [OPTION]
+
+  -h, --help                            show help
+  -c, --check                           downloads files only, no upload
+  -s [location], --server [location]    ftp location to connect to
+  -u [user], --user [user]              ftp user
+  -p [password], --password [password]  ftp password
+
+
+== Example
+
+  worker.rb -s myaccount.revapp.de -u myuser -p mypass
