@@ -33,7 +33,6 @@ require "rdoc/usage"
 require "logger"
 
 LOGFILE = "worker.log"
-EXCLUDES_REGEXP = /\/_fcsvr_/
 
 opts = GetoptLong.new(
   ["--help", "-h", GetoptLong::NO_ARGUMENT],
@@ -98,6 +97,7 @@ class RevAppConnect
   IN_FOLDERS = %w[xmlout]
   OUT_FOLDERS = %w[videos thumbs xmlin]
   TEXTFILES = %w[txt xml]
+  EXCLUDES_REGEXP = /\/_fcsvr_/
   DIR = File.dirname(__FILE__)
 
   attr_accessor :server, :user, :password, :ftp
