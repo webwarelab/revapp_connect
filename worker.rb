@@ -93,6 +93,7 @@ class RevAppConnect
   end
 
   class ConfigurationError < StandardError; end
+  class ConnectionError < StandardError; end
 
   IN_FOLDERS = %w[xmlout]
   OUT_FOLDERS = %w[videos thumbs xmlin]
@@ -157,8 +158,12 @@ class RevAppConnect
     raise ConfigurationError, "FTP user is missing! Provide option '-u [user]' when calling this script." unless user
     raise ConfigurationError, "FTP password is missing! Provide option '-p [password]' when calling this script." unless password
     Logger.info("Connecting to #{user}@#{server}...")
-    @ftp = Net::FTP.new(server)
-    @ftp.login(user, password)
+    begin
+      @ftp = Net::FTP.new(server)
+      @ftp.login(user, password)
+    rescue => e
+      raise ConnectionError, e.message
+    end
     Logger.info("Connected")
   end
 
@@ -210,5 +215,7 @@ begin
   revapp.put unless check_only
   revapp.exit
 rescue RevAppConnect::ConfigurationError => e
+  RevAppConnect::Logger.fatal(e)
+rescue RevAppConnect::ConnectionError => e
   RevAppConnect::Logger.fatal(e)
 end
