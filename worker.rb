@@ -159,6 +159,7 @@ class RevAppConnect
     Logger.info("Connecting to #{user}@#{server}...")
     @ftp = Net::FTP.new(server)
     @ftp.login(user, password)
+    Logger.info("Connected")
   end
 
   def get_file(file, folder)
